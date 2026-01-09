@@ -1,0 +1,14 @@
+@startuml CreateAuctionAlternative
+title UC 2.1.3 - Kreiranje aukcije (Alt: Nevalidni podaci)
+
+actor Korisnik as U
+participant "Frontend (React)" as FE
+participant "Backend API (Express)" as BE
+
+U -> FE: Unosi podatke aukcije
+U -> FE: Klik na "Kreiraj aukciju"
+FE -> BE: POST /auctions
+BE -> BE: Validacija unosa
+BE --> FE: 400 Bad Request (validation error)
+FE -> U: Prikaz poruke o grešci
+@enduml
