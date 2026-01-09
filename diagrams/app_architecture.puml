@@ -1,0 +1,40 @@
+@startuml AppArchitecture
+title Arhitektura aplikacije - Online aukcije (React + Express + Prisma + MySQL)
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+actor "Korisnik" as U
+
+component "Frontend\nReact + Tailwind" as FE
+component "Backend API\nNode.js + Express" as BE
+component "ORM sloj\nPrisma" as PR
+database "Baza\nMySQL" as DB
+component "Real-time servis\nSocket.IO (WebSocket)" as WS
+component "Email servis\nResend API" as RES
+component "Storage\nAWS S3" as S3
+
+U --> FE : UI interakcije\n(pregled, pretraga, licitiranje)
+
+FE --> BE : REST API (HTTP/JSON)\nCRUD, auth, pretraga, paginacija
+FE <--> WS : WebSocket\nreal-time ponude
+
+WS --> BE : događaji ponuda\nnewBid / bidUpdated
+BE --> WS : emitovanje ažuriranja\nbidUpdated / auctionEnded
+
+BE --> PR : DB operacije\n(queries, transakcije)
+PR --> DB : SQL upiti
+
+BE --> RES : HTTP API\nemail notifikacije
+BE --> S3 : HTTP API\nupload slika (S3)
+S3 --> BE : URL/signed URL
+BE --> FE : vraća URL slike\nu odgovoru
+
+note right of BE
+Validacija i poslovna logika:
+- obrada aukcija i ponuda
+- kontrola konkurentnih ponuda
+- autentifikacija i autorizacija
+end note
+
+@enduml
