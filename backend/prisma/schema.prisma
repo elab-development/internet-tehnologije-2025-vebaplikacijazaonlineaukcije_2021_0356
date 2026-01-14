@@ -6,3 +6,28 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  buyer
+  seller
+  admin
+}
+
+enum UserStatus {
+  active
+  inactive
+  blocked
+}
+
+
+model User {
+  id           Int        @id @default(autoincrement())
+  fullName     String
+  email        String     @unique
+  passwordHash String
+  role         UserRole   @default(buyer)
+  status       UserStatus @default(active)
+  createdAt    DateTime   @default(now())
+
+  @@index([email])
+}
