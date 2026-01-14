@@ -5,12 +5,12 @@ import cookieParser from 'cookie-parser';
 
 import { prisma } from './prismaClient.js';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use(
   cors({
@@ -22,11 +22,16 @@ app.use(cookieParser());
 
 app.get('/health', async (req, res) => {
   try {
-@@ -20,8 +29,10 @@
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', db: 'connected' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', db: 'not connected' });
   }
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 
