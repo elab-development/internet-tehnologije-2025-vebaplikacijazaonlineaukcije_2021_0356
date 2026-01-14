@@ -31,3 +31,12 @@ model User {
 
   @@index([email])
 }
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
