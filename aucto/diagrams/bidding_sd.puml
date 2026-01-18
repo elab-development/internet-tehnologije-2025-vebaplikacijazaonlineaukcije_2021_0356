@@ -1,0 +1,29 @@
+@startuml bidding_sd
+title UC 2.1.5 - Licitiranje (Glavni tok)
+
+actor Korisnik as U
+participant "Frontend (React)" as FE
+participant "WebSocket (Socket.IO)" as WS
+participant "Backend API (Express)" as BE
+database "MySQL" as DB
+
+U -> FE: Otvara aktivnu aukciju
+FE -> BE: GET /auctions/{id}
+BE -> DB: Dohvati aukciju + currentPrice
+DB --> BE: Podaci
+BE --> FE: Detalji aukcije
+FE -> U: Prikaz trenutne vodeće ponude
+
+U -> FE: Unosi iznos ponude
+U -> FE: Klik na "Predaj ponudu"
+FE -> WS: emit newBid(auctionId, amount)
+WS -> BE: prosledi newBid
+BE -> DB: Dohvati trenutnu vodeću ponudu
+DB --> BE: currentPrice
+BE -> BE: Proveri amount > currentPrice
+BE -> DB: Upis ponude + update currentPrice
+DB --> BE: Potvrda
+BE -> WS: emit bidUpdated(newPrice, bidder)
+WS -> FE: bidUpdated(...)
+FE -> U: Prikaz ažurirane ponude
+@enduml

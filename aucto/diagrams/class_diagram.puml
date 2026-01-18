@@ -1,0 +1,136 @@
+@startuml class_diagram
+title Dijagram klasa - Online aukcije (MERN)
+
+skinparam classAttributeIconSize 0
+
+' ====== ENUMS ======
+enum UserRole {
+  user
+  admin
+}
+
+enum UserStatus {
+  active
+  blocked
+}
+
+enum AuctionStatus {
+  active
+  finished
+  archived
+}
+
+' ====== CLASSES ======
+class User {
+  +userId: ObjectId <<PK>>
+  +fullName: String
+  +email: String <<UNIQUE>>
+  +passwordHash: String
+  +role: UserRole
+  +status: UserStatus
+  +createdAt: Date
+}
+
+class Category {
+  +categoryId: ObjectId <<PK>>
+  +name: String <<UNIQUE>>
+  +description: String
+}
+
+class Auction {
+  +auctionId: ObjectId <<PK>>
+  +title: String
+  +description: String
+  +imageUrl: String
+  +startingPrice: Decimal
+  +currentPrice: Decimal
+  +startTime: Date
+  +endTime: Date
+  +status: AuctionStatus
+  +sellerId: ObjectId <<FK(User.userId)>>
+  +categoryId: ObjectId <<FK(Category.categoryId)>>
+}
+
+class Bid {
+  +bidId: ObjectId <<PK>>
+  +amount: Decimal
+  +timestamp: Date
+  +userId: ObjectId <<FK(User.userId)>>
+  +auctionId: ObjectId <<FK(Auction.auctionId)>>
+}
+
+class CartItem {
+  +cartItemId: ObjectId <<PK>>
+  +finalPrice: Decimal
+  +addedAt: Date
+  +userId: ObjectId <<FK(User.userId)>>
+  +auctionId: ObjectId <<FK(Auction.auctionId)>>
+}
+
+class Order {
+  +orderId: ObjectId <<PK>>
+  +totalPrice: Decimal
+  +orderDate: Date
+  +userId: ObjectId <<FK(User.userId)>>
+  +auctionId: ObjectId <<FK(Auction.auctionId)>>
+}
+
+' ====== RELATIONSHIPS ======
+' User - Auction (seller creates auctions)
+User "1" -- "0..*" Auction : kreira >
+
+' Category - Auction
+Category "1" -- "0..*" Auction : sadrži >
+
+' Auction - Bid
+Auction "1" -- "0..*" Bid : ima ponude >
+
+' User - Bid
+User "1" -- "0..*" Bid : postavlja >
+
+' User - CartItem
+User "1" -- "0..*" CartItem : ima u korpi >
+
+' Auction - CartItem (one auction can appear at most once in carts - winner only)
+Auction "1" -- "0..1" CartItem : pobednik->korpa >
+
+' User - Order
+User "1" -- "0..*" Order : izvršava >
+
+' Auction - Order (max one order per auction)
+Auction "1" -- "0..1" Order : završena kupovina >
+
+' ====== INTEGRITY RULES (notes) ======
+note right of User
+  Pravila:
+  - email mora biti jedinstven
+  - passwordHash se čuva heširano
+end note
+
+note right of Auction
+  Pravila:
+  - endTime > startTime
+  - currentPrice >= startingPrice
+  - sellerId mora postojati (FK)
+  - categoryId mora postojati (FK)
+end note
+
+note right of Bid
+  Pravila:
+  - amount > trenutna vodeća ponuda u trenutku upisa
+  - ponude se ne menjaju nakon završetka aukcije
+end note
+
+note right of CartItem
+  Pravila:
+  - jedna aukcija može biti u korpi najviše jednom (0..1)
+  - finalPrice = pobednička ponuda
+end note
+
+note right of Order
+  Pravila:
+  - jedna aukcija ima najviše jednu narudžbinu (0..1)
+  - totalPrice = finalPrice iz aukcije/korpe
+end note
+
+@enduml

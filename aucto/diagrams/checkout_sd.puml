@@ -1,0 +1,22 @@
+@startuml checkout_sd
+title UC 2.1.7 - Završetak kupovine (Glavni tok)
+
+actor Korisnik as U
+participant "Frontend (React)" as FE
+participant "Backend API (Express)" as BE
+database "MySQL" as DB
+
+U -> FE: Otvara korpu
+FE -> BE: GET /cart
+BE -> DB: Dohvati stavke korpe korisnika
+DB --> BE: Lista stavki + ukupna cena
+BE --> FE: Podaci za prikaz
+FE -> U: Prikaz korpe
+
+U -> FE: Klik na "Završi kupovinu"
+FE -> BE: POST /checkout
+BE -> DB: Kreiraj Order + ukloni stavke iz korpe
+DB --> BE: Potvrda
+BE --> FE: Potvrda kupovine
+FE -> U: Prikaz potvrde kupovine
+@enduml

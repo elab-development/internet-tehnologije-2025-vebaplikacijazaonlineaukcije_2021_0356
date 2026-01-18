@@ -1,0 +1,123 @@
+@startuml use_cases
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam shadowing false
+
+'========================
+' AKTERI (ULOGE)
+'========================
+actor "Gost" as Gost
+actor "Kupac" as Kupac
+actor "Prodavac" as Prodavac
+actor "Administrator" as Admin
+actor "Sistem" as Sistem
+
+'========================
+' SLUČAJEVI KORIŠĆENJA
+' (pokriveni backend-om)
+'========================
+rectangle "Sistem za online aukcije" {
+
+  ' --- Auth (public + logged in) ---
+  usecase "2.1.1.\nRegistracija korisnika" as UC_Reg
+  usecase "2.1.2.\nPrijava korisnika" as UC_Login
+  usecase "Odjava korisnika" as UC_Logout
+  usecase "Pregled sopstvenog profila (Me)" as UC_Me
+
+  ' --- Auctions ---
+  usecase "2.1.8.\nPretraga i filtriranje aukcija" as UC_Search
+  usecase "2.1.4.\nPregled detalja aukcije" as UC_AuctionDetails
+  usecase "Kreiranje aukcije" as UC_CreateAuction
+  usecase "Izmena aukcije" as UC_UpdateAuction
+
+  ' --- Bids ---
+  usecase "2.1.5.\nLicitiranje" as UC_Bid
+  usecase "Pregled bidova za aukciju" as UC_ListBids
+
+  ' --- Settlement (service) ---
+  usecase "2.1.6.\nZavršetak aukcije" as UC_SettleAuction
+
+  ' --- Cart & Orders ---
+  usecase "Pregled korpe (CartItem)" as UC_ListCart
+  usecase "Pregled jednog CartItem-a" as UC_GetCart
+  usecase "2.1.7.\nZavršetak kupovine" as UC_CreateOrder
+  usecase "Pregled porudžbina (Order)" as UC_ListOrders
+  usecase "Pregled jedne porudžbine" as UC_GetOrder
+
+  ' --- Categories (admin CRUD, public read) ---
+  usecase "Pregled svih kategorija" as UC_ListCategories
+  usecase "Pregled jedne kategorije" as UC_GetCategory
+  usecase "Kreiranje kategorije" as UC_CreateCategory
+  usecase "Izmena kategorije" as UC_UpdateCategory
+  usecase "Brisanje kategorije" as UC_DeleteCategory
+
+  ' --- Users (admin) ---
+  usecase "Pregled svih korisnika (filter po ulozi)" as UC_ListUsers
+  usecase "Ažuriranje statusa korisnika" as UC_UpdateUserStatus
+  usecase "Ažuriranje uloge korisnika" as UC_UpdateUserRole
+}
+
+'========================
+' VEZE (bez hijerarhije, bez strelica među ulogama)
+'========================
+
+' Gost (public)
+Gost --> UC_Reg
+Gost --> UC_Login
+Gost --> UC_Search
+Gost --> UC_AuctionDetails
+Gost --> UC_ListCategories
+Gost --> UC_GetCategory
+
+' Kupac
+Kupac --> UC_Logout
+Kupac --> UC_Me
+Kupac --> UC_Search
+Kupac --> UC_AuctionDetails
+Kupac --> UC_Bid
+Kupac --> UC_ListCart
+Kupac --> UC_GetCart
+Kupac --> UC_CreateOrder
+Kupac --> UC_ListOrders
+Kupac --> UC_GetOrder
+Kupac --> UC_ListCategories
+Kupac --> UC_GetCategory
+
+' Prodavac
+Prodavac --> UC_Logout
+Prodavac --> UC_Me
+Prodavac --> UC_Search
+Prodavac --> UC_AuctionDetails
+Prodavac --> UC_CreateAuction
+Prodavac --> UC_UpdateAuction
+Prodavac --> UC_ListBids
+Prodavac --> UC_ListCart
+Prodavac --> UC_GetCart
+Prodavac --> UC_ListOrders
+Prodavac --> UC_GetOrder
+Prodavac --> UC_ListCategories
+Prodavac --> UC_GetCategory
+
+' Administrator
+Admin --> UC_Logout
+Admin --> UC_Me
+Admin --> UC_ListUsers
+Admin --> UC_UpdateUserStatus
+Admin --> UC_UpdateUserRole
+Admin --> UC_CreateCategory
+Admin --> UC_UpdateCategory
+Admin --> UC_DeleteCategory
+Admin --> UC_ListCategories
+Admin --> UC_GetCategory
+Admin --> UC_UpdateAuction
+Admin --> UC_ListBids
+Admin --> UC_ListCart
+Admin --> UC_GetCart
+Admin --> UC_ListOrders
+Admin --> UC_GetOrder
+
+' Sistem (automatska obrada isteka aukcije)
+Sistem --> UC_SettleAuction
+
+@enduml

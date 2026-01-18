@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  buyer
+  seller
+  admin
+}
+
+enum UserStatus {
+  active
+  inactive
+  blocked
+}
+
+enum AuctionStatus {
+  active
+  archived
+  finished
+}
+
+
+model User {
+  id           Int        @id @default(autoincrement())
+  fullName     String
+  email        String     @unique
+  passwordHash String
+  role         UserRole   @default(buyer)
+  status       UserStatus @default(active)
+  createdAt    DateTime   @default(now())
+
+  auctions      Auction[]
+  bids          Bid[]  
+  cartItems     CartItem[]
+  orders        Order[]
+
+  @@index([email])
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  auctions     Auction[]
+}
+
+model Auction {
+  id            Int           @id @default(autoincrement())
+  title         String
+  description   String        @db.Text
+  imageUrl      String
+  startingPrice Decimal       @db.Decimal(10, 2)
+  currentPrice  Decimal?      @db.Decimal(10, 2)
+  startTime     DateTime
+  endTime       DateTime
+  status        AuctionStatus @default(active)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  sellerId   Int
+  seller     User      @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  categoryId Int
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  bids          Bid[]  
+  cartItems     CartItem[]
+  orders        Order[]
+
+  @@index([sellerId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([endTime])
+}
+
+model Bid {
+  id        Int      @id @default(autoincrement())
+  amount    Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  auctionId Int
+  auction   Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auctionId])
+
+  @@index([auctionId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  finalPrice Decimal @db.Decimal(10, 2)
+  addedAt   DateTime @default(now())
+
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  auctionId Int
+  auction   Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auctionId])
+  @@unique([auctionId])
+
+  @@index([userId])
+  @@index([auctionId])
+  @@index([addedAt])
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  totalPrice Decimal  @db.Decimal(10, 2)
+  orderDate  DateTime @default(now())
+
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  auctionId  Int
+  auction    Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auctionId])
+  @@unique([auctionId])
+
+  @@index([userId])
+  @@index([auctionId])
+  @@index([orderDate])
+}
+
+
+
+

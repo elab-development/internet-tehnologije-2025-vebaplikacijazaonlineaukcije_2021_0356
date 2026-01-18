@@ -1,0 +1,20 @@
+@startuml CreateAuctionSD
+title UC 2.1.3 - Kreiranje aukcije (Glavni tok)
+
+actor Korisnik as U
+participant "Frontend (React)" as FE
+participant "Backend API (Express)" as BE
+database "MySQL" as DB
+
+U -> FE: Otvara stranicu za kreiranje aukcije
+FE -> U: Prikazuje formu za kreiranje
+
+U -> FE: Unosi naziv, opis, cenu, slike i trajanje
+U -> FE: Klik na "Kreiraj aukciju"
+FE -> BE: POST /auctions (podaci)
+BE -> BE: Validacija unosa
+BE -> DB: Upis aukcije
+DB --> BE: Potvrda upisa
+BE --> FE: 201 Created + auctionId
+FE -> U: Prikaz poruke o uspešnom kreiranju
+@enduml
