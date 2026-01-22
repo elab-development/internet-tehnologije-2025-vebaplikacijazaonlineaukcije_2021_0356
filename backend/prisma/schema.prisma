@@ -35,8 +35,10 @@ model User {
   status       UserStatus @default(active)
   createdAt    DateTime   @default(now())
 
-  auctions     Auction[]
-  bids         Bid[]  
+  auctions      Auction[]
+  bids          Bid[]  
+  cartItems     CartItem[]
+  orders        Order[]
 
   @@index([email])
 }
@@ -70,7 +72,9 @@ model Auction {
   categoryId Int
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
-  bids         Bid[]  
+  bids          Bid[]  
+  cartItems     CartItem[]
+  orders        Order[]
 
   @@index([sellerId])
   @@index([categoryId])
@@ -95,5 +99,44 @@ model Bid {
   @@index([userId])
   @@index([createdAt])
 }
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  finalPrice Decimal @db.Decimal(10, 2)
+  addedAt   DateTime @default(now())
+
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  auctionId Int
+  auction   Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auctionId])
+  @@unique([auctionId])
+
+  @@index([userId])
+  @@index([auctionId])
+  @@index([addedAt])
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  totalPrice Decimal  @db.Decimal(10, 2)
+  orderDate  DateTime @default(now())
+
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  auctionId  Int
+  auction    Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auctionId])
+  @@unique([auctionId])
+
+  @@index([userId])
+  @@index([auctionId])
+  @@index([orderDate])
+}
+
 
 
