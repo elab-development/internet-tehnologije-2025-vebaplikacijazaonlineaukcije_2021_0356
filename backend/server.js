@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import categoryRoutes from './routes/category.routes.js';
 import auctionRoutes from './routes/auction.routes.js';
+import bidRoutes from './routes/bid.routes.js';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/auctions', auctionRoutes);
+app.use('/api/bids', bidRoutes);
 
 const PORT = process.env.PORT || 5000;
 
