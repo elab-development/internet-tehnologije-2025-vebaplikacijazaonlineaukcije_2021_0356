@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { requireAuth, requireRole } from '../middlewares/auth.js';
 import {
   createOrUpdateBid,
+  getMyBidForAuction,
   listBidsByAuction,
 } from '../controllers/bid.controller.js';
 
@@ -9,6 +10,7 @@ const router = Router();
 
 router.post('/', requireAuth, requireRole('buyer'), createOrUpdateBid);
 
+router.get('/me', requireAuth, getMyBidForAuction);
 router.get(
   '/',
   requireAuth,

@@ -25,7 +25,7 @@ export default function AuctionCard({ auction }) {
       to={`/auctions/${auction.id}`}
       className='group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow'
     >
-      <div className='aspect-[16/10] w-full overflow-hidden bg-slate-100'>
+      <div className='aspect-square w-full overflow-hidden bg-slate-100'>
         <img
           src={auction.imageUrl}
           alt={auction.title}

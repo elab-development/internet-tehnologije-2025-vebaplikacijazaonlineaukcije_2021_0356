@@ -221,3 +221,49 @@ export const listBidsByAuction = async (req, res) => {
     return res.status(500).json({ message: 'Failed to list bids' });
   }
 };
+
+/**
+ * AUTH
+ * GET /api/bids/me?auctionId=123
+ *
+ * Returns:
+ * - { bid: { id, amount, createdAt, auctionId } } OR { bid: null }
+ */
+export const getMyBidForAuction = async (req, res) => {
+  try {
+    const { auctionId } = req.query;
+
+    const aid = toInt(auctionId);
+    if (!aid) {
+      return res
+        .status(400)
+        .json({ message: 'auctionId is required and must be an integer' });
+    }
+
+    const exists = await prisma.auction.findUnique({
+      where: { id: aid },
+      select: { id: true },
+    });
+    if (!exists) return res.status(404).json({ message: 'Auction not found' });
+
+    const bid = await prisma.bid.findUnique({
+      where: {
+        userId_auctionId: {
+          userId: req.user.id,
+          auctionId: aid,
+        },
+      },
+      select: {
+        id: true,
+        amount: true,
+        createdAt: true,
+        auctionId: true,
+      },
+    });
+
+    return res.json({ bid: bid || null });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Failed to fetch my bid' });
+  }
+};
