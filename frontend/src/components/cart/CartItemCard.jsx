@@ -78,7 +78,7 @@ export default function CartItemCard({
             <button
               onClick={onCreateOrder}
               disabled={disabled || isCreating}
-              className='inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+              className='inline-flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
             >
               <ShoppingBag size={16} />
               {isCreating ? 'Creating…' : 'Create order'}

@@ -28,7 +28,7 @@ export default function Register() {
       <div className='mx-auto flex min-h-full max-w-6xl items-center justify-center px-4 py-12'>
         <div className='w-full max-w-md'>
           <div className='mb-6 text-center'>
-            <div className='mx-auto mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-r from-purple-700 to-indigo-600 text-white shadow'>
+            <div className='mx-auto mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-linear-to-r from-purple-700 to-indigo-600 text-white shadow'>
               <UserPlus size={20} />
             </div>
             <h1 className='text-2xl font-semibold text-slate-900'>Register</h1>
@@ -108,7 +108,7 @@ export default function Register() {
 
             <button
               disabled={isLoading}
-              className='w-full rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+              className='w-full rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
             >
               {isLoading ? 'Creating account…' : 'Register'}
             </button>

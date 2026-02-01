@@ -113,7 +113,7 @@ export function CategoryModal({
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className='min-h-[110px] w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100'
+                className='min-h-27.5 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100'
                 placeholder='Optional description…'
                 disabled={isLoading}
                 maxLength={500}

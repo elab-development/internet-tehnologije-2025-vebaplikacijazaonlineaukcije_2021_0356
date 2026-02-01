@@ -98,7 +98,7 @@ export default function AuctionsToolbar({
             <button
               onClick={onOpenCreate}
               disabled={isLoading}
-              className='inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+              className='inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
             >
               <Plus size={18} />
               Add Auction

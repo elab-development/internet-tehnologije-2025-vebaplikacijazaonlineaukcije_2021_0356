@@ -352,7 +352,7 @@ export default function AuctionsTab() {
           <button
             onClick={onApplyFilters}
             disabled={isLoading}
-            className='rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+            className='rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
           >
             Apply
           </button>
@@ -381,7 +381,7 @@ export default function AuctionsTab() {
       {/* Table */}
       <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white'>
         <div className='overflow-x-auto'>
-          <table className='min-w-[1050px] w-full text-left text-sm'>
+          <table className='min-w-262.5 w-full text-left text-sm'>
             <thead className='bg-slate-50 text-xs uppercase tracking-wide text-slate-600'>
               <tr>
                 <th className='px-4 py-3'>Auction</th>

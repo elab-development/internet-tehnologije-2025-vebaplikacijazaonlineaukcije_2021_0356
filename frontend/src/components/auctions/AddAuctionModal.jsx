@@ -61,7 +61,7 @@ export default function AddAuctionModal({ open, onClose, onCreated }) {
   }
 
   return (
-    <div className='fixed inset-0 z-[100]'>
+    <div className='fixed inset-0 z-100'>
       <button
         onClick={onClose}
         className='absolute inset-0 bg-black/50'
@@ -232,7 +232,7 @@ export default function AddAuctionModal({ open, onClose, onCreated }) {
 
               <button
                 disabled={!canUse || isLoading}
-                className='rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+                className='rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
               >
                 {isLoading ? 'Creating…' : 'Create auction'}
               </button>

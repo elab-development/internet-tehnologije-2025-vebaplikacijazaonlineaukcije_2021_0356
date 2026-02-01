@@ -47,7 +47,7 @@ function AuctionCard({ a }) {
 
   return (
     <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md'>
-      <div className='aspect-[4/3] w-full overflow-hidden bg-slate-100'>
+      <div className='aspect-square w-full overflow-hidden bg-slate-100'>
         <img
           src={a.imageUrl}
           alt={a.title}
@@ -135,7 +135,7 @@ export default function Home() {
   const latest = useMemo(() => auctions || [], [auctions]);
 
   return (
-    <div className='bg-gradient-to-br from-purple-50 via-white to-indigo-50'>
+    <div className='bg-linear-to-br from-purple-50 via-white to-indigo-50'>
       <div className='mx-auto w-full max-w-6xl px-4 py-10'>
         {/* HERO */}
         <div className='relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm'>
@@ -163,7 +163,7 @@ export default function Home() {
               <div className='mt-6 flex flex-wrap items-center gap-3'>
                 <Link
                   to='/auctions'
-                  className='inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95'
+                  className='inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95'
                 >
                   Explore auctions
                   <ArrowRight size={16} />
@@ -258,7 +258,7 @@ export default function Home() {
                   key={i}
                   className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm'
                 >
-                  <div className='aspect-[4/3] w-full animate-pulse bg-slate-200' />
+                  <div className='aspect-square w-full animate-pulse bg-slate-200' />
                   <div className='p-5'>
                     <div className='h-4 w-2/3 animate-pulse rounded bg-slate-200' />
                     <div className='mt-3 h-3 w-1/2 animate-pulse rounded bg-slate-200' />

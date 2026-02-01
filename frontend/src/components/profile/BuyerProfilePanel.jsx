@@ -250,7 +250,7 @@ export default function BuyerProfilePanel({
                   >
                     {p.isWinning ? 'WINNING' : 'NOT WINNING'}
                   </div>
-                  <div className='pointer-events-none absolute left-3 top-[54px] rounded-xl bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700'>
+                  <div className='pointer-events-none absolute left-3 top-13.5 rounded-xl bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700'>
                     My bid: {formatMoney(p.myBid?.amount)}
                   </div>
                 </div>

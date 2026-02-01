@@ -157,7 +157,7 @@ export default function UsersTab() {
       {/* Table */}
       <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white'>
         <div className='overflow-x-auto'>
-          <table className='min-w-[900px] w-full text-left text-sm'>
+          <table className='min-w-225 w-full text-left text-sm'>
             <thead className='bg-slate-50 text-xs uppercase tracking-wide text-slate-600'>
               <tr>
                 <th className='px-4 py-3'>User</th>

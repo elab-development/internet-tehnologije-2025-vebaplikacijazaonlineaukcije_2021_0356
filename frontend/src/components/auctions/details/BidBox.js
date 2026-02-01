@@ -96,7 +96,7 @@ export default function BidBox({
 
         <button
           disabled={!isAuctionRunning || isLoading}
-          className='w-full rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+          className='w-full rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
         >
           {isLoading ? 'Submitting…' : 'Place bid'}
         </button>

@@ -84,7 +84,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className='sticky top-0 z-50 border-b border-white/10 bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-600'>
+    <header className='sticky top-0 z-50 border-b border-white/10 bg-linear-to-r from-purple-700 via-purple-600 to-indigo-600'>
       <div className='mx-auto flex max-w-6xl items-center justify-between px-4 py-3'>
         {/* Brand */}
         <Link

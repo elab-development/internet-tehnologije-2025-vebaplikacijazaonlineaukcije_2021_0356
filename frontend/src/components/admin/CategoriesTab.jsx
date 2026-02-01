@@ -135,7 +135,7 @@ export default function CategoriesTab() {
           <button
             onClick={openCreate}
             disabled={isLoading}
-            className='inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
+            className='inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-purple-700 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:opacity-95 disabled:opacity-60'
           >
             <Plus size={16} />
             New category
@@ -165,7 +165,7 @@ export default function CategoriesTab() {
       {/* Table */}
       <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white'>
         <div className='overflow-x-auto'>
-          <table className='min-w-[850px] w-full text-left text-sm'>
+          <table className='min-w-212.5 w-full text-left text-sm'>
             <thead className='bg-slate-50 text-xs uppercase tracking-wide text-slate-600'>
               <tr>
                 <th className='px-4 py-3'>Name</th>
@@ -184,7 +184,7 @@ export default function CategoriesTab() {
                         <div className='h-4 w-44 rounded bg-slate-200' />
                       </td>
                       <td className='px-4 py-3'>
-                        <div className='h-4 w-[520px] rounded bg-slate-200' />
+                        <div className='h-4 w-130 rounded bg-slate-200' />
                       </td>
                       <td className='px-4 py-3'>
                         <div className='h-4 w-16 rounded bg-slate-200' />
@@ -218,7 +218,7 @@ export default function CategoriesTab() {
 
                   <td className='px-4 py-3 text-slate-700'>
                     {normalizeStr(c.description) ? (
-                      <div className='line-clamp-2 max-w-[560px]'>
+                      <div className='line-clamp-2 max-w-140'>
                         {c.description}
                       </div>
                     ) : (

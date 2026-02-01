@@ -147,7 +147,7 @@ export default function AuctionDetails() {
                     </div>
                   </div>
 
-                  <div className='mt-4 shrink-0 rounded-2xl bg-gradient-to-r from-purple-700 to-indigo-600 px-5 py-4 text-white sm:mt-0'>
+                  <div className='mt-4 shrink-0 rounded-2xl bg-linear-to-r from-purple-700 to-indigo-600 px-5 py-4 text-white sm:mt-0'>
                     <div className='text-xs text-white/80'>Current price</div>
                     <div className='text-2xl font-semibold'>
                       {formatMoney(price)}
