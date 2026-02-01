@@ -375,3 +375,109 @@ export const updateAuction = async (req, res) => {
     return res.status(500).json({ message: 'Failed to update auction' });
   }
 };
+
+/**
+ * BUYER ONLY
+ * GET /api/auctions/participating
+ *
+ * Query:
+ *  - status: active | finished | archived | all (default all)
+ *  - page, limit
+ *
+ * Returns:
+ *  {
+ *    page, limit, total, totalPages,
+ *    items: [
+ *      {
+ *        auction: { ...minimal fields for AuctionCard... },
+ *        myBid: { id, amount, createdAt },
+ *        isWinning: boolean
+ *      }
+ *    ]
+ *  }
+ */
+export const listMyParticipatingAuctions = async (req, res) => {
+  try {
+    if (req.user.role !== 'buyer') {
+      return res.status(403).json({ message: 'Only buyers can access this' });
+    }
+
+    const { status = 'all', page = '1', limit = '12' } = req.query;
+
+    const pageNum = Math.max(1, Number(page) || 1);
+    const limitNum = Math.min(50, Math.max(1, Number(limit) || 12));
+    const skip = (pageNum - 1) * limitNum;
+
+    const allowedStatus = new Set(['active', 'finished', 'archived', 'all']);
+    const st = allowedStatus.has(status) ? status : 'all';
+
+    const where = {
+      userId: req.user.id,
+      ...(st !== 'all' ? { auction: { status: st } } : {}),
+    };
+
+    const [bids, total] = await Promise.all([
+      prisma.bid.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limitNum,
+        select: {
+          id: true,
+          amount: true,
+          createdAt: true,
+          auction: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              imageUrl: true,
+              startingPrice: true,
+              currentPrice: true,
+              startTime: true,
+              endTime: true,
+              status: true,
+              createdAt: true,
+              sellerId: true,
+              categoryId: true,
+              seller: { select: { id: true, fullName: true } },
+              category: { select: { id: true, name: true } },
+            },
+          },
+        },
+      }),
+      prisma.bid.count({ where }),
+    ]);
+
+    const items = (bids || []).map((b) => {
+      const auction = b.auction;
+
+      const current = auction?.currentPrice;
+      const myAmt = b.amount;
+
+      const isWinning =
+        current !== null &&
+        current !== undefined &&
+        Number(current) === Number(myAmt);
+
+      return {
+        auction,
+        myBid: { id: b.id, amount: b.amount, createdAt: b.createdAt },
+        isWinning,
+      };
+    });
+
+    return res.json({
+      page: pageNum,
+      limit: limitNum,
+      total,
+      totalPages: Math.ceil(total / limitNum),
+      items,
+    });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ message: 'Failed to list participating auctions' });
+  }
+};

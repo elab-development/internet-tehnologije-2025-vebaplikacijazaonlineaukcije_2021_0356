@@ -8,6 +8,7 @@ import {
   getAuctionById,
   createAuction,
   updateAuction,
+  listMyParticipatingAuctions,
 } from '../controllers/auction.controller.js';
 
 const router = Router();
@@ -25,6 +26,7 @@ const upload = multer({
 });
 
 router.get('/', listAuctions);
+router.get('/participating', requireAuth, listMyParticipatingAuctions);
 router.get('/:id', getAuctionById);
 
 router.post(
