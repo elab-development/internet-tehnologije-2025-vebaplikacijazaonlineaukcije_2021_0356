@@ -1,0 +1,51 @@
+@startuml use_cases_admin
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam shadowing false
+
+actor "Administrator" as Admin
+actor "Sistem" as Sistem
+
+rectangle "Sistem za online aukcije" {
+
+  usecase "Odjava korisnika" as UC_Logout
+  usecase "Pregled sopstvenog profila" as UC_Me
+
+  usecase "Pregled svih korisnika" as UC_ListUsers
+  usecase "Ažuriranje statusa korisnika" as UC_UpdateUserStatus
+  usecase "Ažuriranje uloge korisnika" as UC_UpdateUserRole
+
+  usecase "Kreiranje kategorije" as UC_CreateCategory
+  usecase "Izmena kategorije" as UC_UpdateCategory
+  usecase "Brisanje kategorije" as UC_DeleteCategory
+  usecase "Pregled svih kategorija" as UC_ListCategories
+  usecase "Pregled jedne kategorije" as UC_GetCategory
+
+  usecase "Izmena aukcije" as UC_UpdateAuction
+  usecase "Pregled bidova za aukciju" as UC_ListBids
+
+  usecase "Pregled porudžbina" as UC_ListOrders
+  usecase "Pregled jedne porudžbine" as UC_GetOrder
+
+  usecase "Završetak aukcije" as UC_SettleAuction
+}
+
+Admin --> UC_Logout
+Admin --> UC_Me
+Admin --> UC_ListUsers
+Admin --> UC_UpdateUserStatus
+Admin --> UC_UpdateUserRole
+Admin --> UC_CreateCategory
+Admin --> UC_UpdateCategory
+Admin --> UC_DeleteCategory
+Admin --> UC_ListCategories
+Admin --> UC_GetCategory
+Admin --> UC_UpdateAuction
+Admin --> UC_ListBids
+Admin --> UC_ListOrders
+Admin --> UC_GetOrder
+
+Sistem --> UC_SettleAuction
+
+@enduml

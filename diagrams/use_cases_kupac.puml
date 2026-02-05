@@ -1,0 +1,43 @@
+@startuml use_cases_kupac
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam shadowing false
+
+actor "Kupac" as Kupac
+
+rectangle "Sistem za online aukcije" {
+
+  usecase "Odjava korisnika" as UC_Logout
+  usecase "Pregled sopstvenog profila" as UC_Me
+
+  usecase "Pretraga i filtriranje aukcija" as UC_Search
+  usecase "Pregled detalja aukcije" as UC_AuctionDetails
+
+  usecase "Licitiranje" as UC_Bid
+
+  usecase "Pregled korpe" as UC_ListCart
+  usecase "Pregled jednog artikla u korpi" as UC_GetCart
+
+  usecase "Završetak kupovine" as UC_CreateOrder
+  usecase "Pregled porudžbina" as UC_ListOrders
+  usecase "Pregled jedne porudžbine" as UC_GetOrder
+
+  usecase "Pregled svih kategorija" as UC_ListCategories
+  usecase "Pregled jedne kategorije" as UC_GetCategory
+}
+
+Kupac --> UC_Logout
+Kupac --> UC_Me
+Kupac --> UC_Search
+Kupac --> UC_AuctionDetails
+Kupac --> UC_Bid
+Kupac --> UC_ListCart
+Kupac --> UC_GetCart
+Kupac --> UC_CreateOrder
+Kupac --> UC_ListOrders
+Kupac --> UC_GetOrder
+Kupac --> UC_ListCategories
+Kupac --> UC_GetCategory
+
+@enduml

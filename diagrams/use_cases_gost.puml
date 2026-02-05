@@ -1,0 +1,28 @@
+@startuml use_cases_gost
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam shadowing false
+
+actor "Gost" as Gost
+
+rectangle "Sistem za online aukcije" {
+
+  usecase "Registracija korisnika" as UC_Reg
+  usecase "Prijava korisnika" as UC_Login
+
+  usecase "Pretraga i filtriranje aukcija" as UC_Search
+  usecase "Pregled detalja aukcije" as UC_AuctionDetails
+
+  usecase "Pregled svih kategorija" as UC_ListCategories
+  usecase "Pregled jedne kategorije" as UC_GetCategory
+}
+
+Gost --> UC_Reg
+Gost --> UC_Login
+Gost --> UC_Search
+Gost --> UC_AuctionDetails
+Gost --> UC_ListCategories
+Gost --> UC_GetCategory
+
+@enduml
