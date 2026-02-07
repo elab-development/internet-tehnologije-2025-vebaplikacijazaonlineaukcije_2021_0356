@@ -1,0 +1,27 @@
+@startuml bidding_sd_alternative_sametime
+title UC 2.1.5 - Licitiranje (Alt: Istovremene ponude)
+
+actor "Korisnik A" as A
+actor "Korisnik B" as B
+participant "Frontend (React)" as FE
+participant "WebSocket (Socket.IO)" as WS
+participant "Backend API (Express)" as BE
+database "MySQL" as DB
+
+A -> FE: Predaje ponudu (amountA)
+B -> FE: Predaje ponudu (amountB)
+
+FE -> WS: emit newBid(A, amountA)
+FE -> WS: emit newBid(B, amountB)
+
+WS -> BE: newBid(A, amountA)
+WS -> BE: newBid(B, amountB)
+
+BE -> DB: Atomic update: accept if amount > currentPrice
+DB --> BE: A prihvaćena / B odbijena ili obrnuto (zavisno od redosleda i iznosa)
+
+BE -> WS: emit bidUpdated(newPrice, winnerBidder)
+WS -> FE: bidUpdated(...)
+FE -> A: Ažuriran prikaz
+FE -> B: Ažuriran prikaz
+@enduml

@@ -1,0 +1,22 @@
+@startuml RegisterUserSD
+title UC 2.1.1 - Registracija korisnika (Glavni tok)
+
+actor Gost as U
+participant "Frontend (React)" as FE
+participant "Backend API (Express)" as BE
+database "MySQL" as DB
+
+U -> FE: Otvara stranicu za registraciju
+FE -> U: Prikazuje formu za registraciju
+
+U -> FE: Unosi ime, email, lozinku i ostale podatke
+U -> FE: Klik na "Kreiraj nalog"
+FE -> BE: POST /auth/register (podaci)
+BE -> BE: Validacija unosa
+BE -> DB: Provera da li email postoji
+DB --> BE: Rezultat provere
+BE -> DB: Kreiranje novog korisnika
+DB --> BE: Potvrda upisa
+BE --> FE: 201 Created + user info
+FE -> U: Prikaz potvrde o uspešnoj registraciji
+@enduml

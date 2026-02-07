@@ -1,0 +1,15 @@
+@startuml auction_details_sd_alternative_notfound
+title UC 2.1.4 - Pregled detalja (Alt: Aukcija ne postoji)
+
+actor "Gost/Korisnik" as U
+participant "Frontend (React)" as FE
+participant "Backend API (Express)" as BE
+database "MySQL" as DB
+
+U -> FE: Bira aukciju
+FE -> BE: GET /auctions/{id}
+BE -> DB: Dohvati aukciju
+DB --> BE: Nema rezultata
+BE --> FE: 404 Not Found
+FE -> U: Prikaz poruke o nedostupnosti
+@enduml
