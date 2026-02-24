@@ -2,9 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
 
 import { prisma } from './prismaClient.js';
 import { settleEndedAuctions } from './services/auctionSettlement.js';
+import { swaggerSpec } from './docs/swagger.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import categoryRoutes from './routes/category.routes.js';
@@ -44,6 +46,7 @@ app.use('/api/auctions', auctionRoutes);
 app.use('/api/bids', bidRoutes);
 app.use('/api/cart-items', cartItemRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/admin', adminRoutes);
 
 const SETTLE_INTERVAL_MS = Number(process.env.SETTLE_INTERVAL_MS || 15000);
 
@@ -55,6 +58,8 @@ setInterval(async () => {
     console.error('[settle] error', err);
   }
 }, SETTLE_INTERVAL_MS);
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 5000;
 
