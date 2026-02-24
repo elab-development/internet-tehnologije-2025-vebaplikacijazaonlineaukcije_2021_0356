@@ -6,7 +6,7 @@
 
 */
 -- AlterTable
-ALTER TABLE `auction` ADD COLUMN `categoryId` INTEGER NOT NULL,
+ALTER TABLE `Auction` ADD COLUMN `categoryId` INTEGER NOT NULL,
     ADD COLUMN `sellerId` INTEGER NOT NULL;
 
 -- CreateIndex
