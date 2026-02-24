@@ -3,12 +3,14 @@ import { Shield, Users, Tag, Gavel, Receipt } from 'lucide-react';
 
 import { useAuthStore } from '../stores/authStore';
 
+import OverviewTab from '../components/admin/OverviewTab';
 import UsersTab from '../components/admin/UsersTab';
 import CategoriesTab from '../components/admin/CategoriesTab';
 import AuctionsTab from '../components/admin/AuctionsTab';
 import OrdersTab from '../components/admin/OrdersTab';
 
 const TABS = [
+  { key: 'overview', label: 'Overview', icon: Shield },
   { key: 'users', label: 'Users', icon: Users },
   { key: 'categories', label: 'Categories', icon: Tag },
   { key: 'auctions', label: 'Auctions', icon: Gavel },
@@ -17,7 +19,7 @@ const TABS = [
 
 export default function Admin() {
   const user = useAuthStore((s) => s.user);
-  const [tab, setTab] = useState('users');
+  const [tab, setTab] = useState('overview');
 
   return (
     <div className='mx-auto w-full max-w-6xl px-4 py-8'>
@@ -64,6 +66,7 @@ export default function Admin() {
         </div>
 
         <div className='p-4 sm:p-6'>
+          {tab === 'overview' && <OverviewTab />}
           {tab === 'users' && <UsersTab />}
           {tab === 'categories' && <CategoriesTab />}
           {tab === 'auctions' && <AuctionsTab />}

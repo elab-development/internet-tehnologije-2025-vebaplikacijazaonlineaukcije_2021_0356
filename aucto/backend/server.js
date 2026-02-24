@@ -12,6 +12,7 @@ import auctionRoutes from './routes/auction.routes.js';
 import bidRoutes from './routes/bid.routes.js';
 import cartItemRoutes from './routes/cartItem.routes.js';
 import orderRoutes from './routes/order.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 
 dotenv.config();
 
