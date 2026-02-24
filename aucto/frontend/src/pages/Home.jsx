@@ -4,6 +4,7 @@ import { ArrowRight, Gavel, Sparkles, Clock } from 'lucide-react';
 
 import { useAuctionsStore } from '../stores/auctionsStore';
 import { useAuthStore } from '../stores/authStore';
+import { useCurrencyStore } from '../stores/currencyStore';
 
 function formatMoney(v) {
   if (v === null || v === undefined) return '—';
@@ -45,6 +46,8 @@ function AuctionCard({ a }) {
       ? a.currentPrice
       : a?.startingPrice;
 
+  const formatUSD = useCurrencyStore((s) => s.formatUSD);
+
   return (
     <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md'>
       <div className='aspect-square w-full overflow-hidden bg-slate-100'>
@@ -78,7 +81,7 @@ function AuctionCard({ a }) {
               Current price
             </div>
             <div className='text-lg font-semibold text-slate-900'>
-              {formatMoney(price)}
+              {formatUSD(price)}
             </div>
           </div>
           <div className='text-right text-xs text-slate-600'>

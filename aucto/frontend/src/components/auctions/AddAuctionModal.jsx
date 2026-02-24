@@ -3,6 +3,7 @@ import { X, Image as ImageIcon } from 'lucide-react';
 
 import { useAuctionsStore } from '../../stores/auctionsStore';
 import { useAuthStore } from '../../stores/authStore';
+import { useCurrencyStore } from '../../stores/currencyStore';
 import CategorySelect from './CategorySelect';
 
 export default function AddAuctionModal({ open, onClose, onCreated }) {
@@ -10,6 +11,9 @@ export default function AddAuctionModal({ open, onClose, onCreated }) {
 
   const { createAuction, isLoading, error, success, clearMessages } =
     useAuctionsStore();
+
+  const inputToUSD = useCurrencyStore((s) => s.inputToUSD);
+  const formatUSD = useCurrencyStore((s) => s.formatUSD);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -35,10 +39,13 @@ export default function AddAuctionModal({ open, onClose, onCreated }) {
 
     if (!canUse) return;
 
+    const spUSD = inputToUSD(Number(startingPrice));
+    if (!Number.isFinite(spUSD) || spUSD <= 0) return;
+
     const created = await createAuction({
       title,
       description,
-      startingPrice,
+      startingPrice: spUSD,
       startTime,
       endTime,
       categoryId,
@@ -138,7 +145,7 @@ export default function AddAuctionModal({ open, onClose, onCreated }) {
 
               <div>
                 <label className='mb-2 block text-sm font-medium text-slate-700'>
-                  Starting price
+                  Starting price ({useCurrencyStore.getState().currency})
                 </label>
                 <input
                   value={startingPrice}

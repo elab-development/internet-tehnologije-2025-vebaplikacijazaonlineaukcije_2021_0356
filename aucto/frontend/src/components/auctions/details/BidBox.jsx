@@ -1,11 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useBidsStore } from '../../../stores/bidsStore';
-
-function formatMoney(v) {
-  const n = Number(v);
-  if (!Number.isFinite(n)) return String(v);
-  return n.toFixed(2);
-}
+import { useCurrencyStore } from '../../../stores/currencyStore';
 
 export default function BidBox({
   auctionId,
@@ -23,6 +18,9 @@ export default function BidBox({
     clearMessages,
   } = useBidsStore();
 
+  const formatUSD = useCurrencyStore((s) => s.formatUSD);
+  const inputToUSD = useCurrencyStore((s) => s.inputToUSD);
+
   const [amount, setAmount] = useState('');
 
   const minNext = useMemo(() => {
@@ -34,10 +32,13 @@ export default function BidBox({
     e.preventDefault();
     clearMessages?.();
 
-    const amt = Number(amount);
-    if (!Number.isFinite(amt)) return;
+    const amtInSelected = Number(amount);
+    if (!Number.isFinite(amtInSelected)) return;
 
-    const res = await placeBid({ auctionId, amount: amt });
+    const amtUSD = inputToUSD(amtInSelected);
+    if (!Number.isFinite(amtUSD)) return;
+
+    const res = await placeBid({ auctionId, amount: amtUSD });
 
     if (res?.auction?.currentPrice !== undefined) {
       setAmount('');
@@ -57,7 +58,7 @@ export default function BidBox({
       {myBid?.amount !== undefined && myBid?.amount !== null && (
         <div className='mb-3 rounded-xl border border-purple-200 bg-purple-50 px-4 py-3 text-sm text-purple-800'>
           <span className='font-medium'>Your current bid:</span>{' '}
-          {formatMoney(myBid.amount)}
+          {formatUSD(myBid.amount)}
         </div>
       )}
 
@@ -84,7 +85,7 @@ export default function BidBox({
             type='number'
             min='0'
             step='0.01'
-            placeholder={`Must be > ${formatMoney(minNext)}`}
+            placeholder={`Must be > ${formatUSD(minNext)}`}
             className='w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100'
             disabled={!isAuctionRunning || isLoading}
             required

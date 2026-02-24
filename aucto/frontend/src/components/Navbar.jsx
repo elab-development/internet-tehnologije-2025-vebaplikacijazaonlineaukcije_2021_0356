@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   Gavel,
@@ -13,6 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
+import { useCurrencyStore } from '../stores/currencyStore';
 
 function NavItem({ to, icon: Icon, label, onClick }) {
   return (
@@ -38,6 +39,15 @@ export default function Navbar() {
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+
+  const currency = useCurrencyStore((s) => s.currency);
+  const supported = useCurrencyStore((s) => s.supported);
+  const setCurrency = useCurrencyStore((s) => s.setCurrency);
+  const initCurrency = useCurrencyStore((s) => s.init);
+
+  useEffect(() => {
+    initCurrency?.();
+  }, [initCurrency]);
 
   const [open, setOpen] = useState(false);
 
@@ -106,6 +116,21 @@ export default function Navbar() {
             <NavItem key={l.to} to={l.to} icon={l.icon} label={l.label} />
           ))}
 
+          {user?.role !== 'admin' && (
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className='ml-2 rounded-xl bg-white/15 px-3 py-2 text-sm font-semibold text-white outline-none hover:bg-white/20'
+              title='Currency'
+            >
+              {supported.map((c) => (
+                <option key={c} value={c} className='text-slate-900'>
+                  {c}
+                </option>
+              ))}
+            </select>
+          )}
+
           {user && (
             <button
               onClick={handleLogout}
@@ -141,6 +166,25 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                 />
               ))}
+
+              {user?.role !== 'admin' && (
+                <div className='rounded-xl bg-white/10 p-3'>
+                  <div className='mb-2 text-xs font-semibold text-white/80'>
+                    Currency
+                  </div>
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className='w-full rounded-xl bg-white/15 px-3 py-2 text-sm font-semibold text-white outline-none'
+                  >
+                    {supported.map((c) => (
+                      <option key={c} value={c} className='text-slate-900'>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               {user && (
                 <button

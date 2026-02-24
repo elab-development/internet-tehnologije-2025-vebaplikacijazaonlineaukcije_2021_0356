@@ -5,16 +5,10 @@ import { Gavel, Clock, Tag, User, Shield, Info } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import { useAuctionsStore } from '../stores/auctionsStore';
 import { useBidsStore } from '../stores/bidsStore';
+import { useCurrencyStore } from '../stores/currencyStore';
 
 import BidBox from '../components/auctions/details/BidBox';
 import BidsPanel from '../components/auctions/details/BidsPanel';
-
-function formatMoney(v) {
-  if (v === null || v === undefined) return '—';
-  const n = Number(v);
-  if (!Number.isFinite(n)) return String(v);
-  return n.toFixed(2);
-}
 
 function formatDate(d) {
   const dt = new Date(d);
@@ -38,6 +32,8 @@ export default function AuctionDetails() {
     myBidByAuction,
     fetchMyBidForAuction,
   } = useBidsStore();
+
+  const formatUSD = useCurrencyStore((s) => s.formatUSD);
 
   const myBid = myBidByAuction?.[auctionId] || null;
 
@@ -150,7 +146,7 @@ export default function AuctionDetails() {
                   <div className='mt-4 shrink-0 rounded-2xl bg-linear-to-r from-purple-700 to-indigo-600 px-5 py-4 text-white sm:mt-0'>
                     <div className='text-xs text-white/80'>Current price</div>
                     <div className='text-2xl font-semibold'>
-                      {formatMoney(price)}
+                      {formatUSD(price)}
                     </div>
                     <div className='mt-1 text-xs text-white/80'>
                       Status:{' '}
